@@ -1,6 +1,7 @@
 package br.com.alura.codechella.service;
 
 import br.com.alura.codechella.dto.EventoDto;
+import br.com.alura.codechella.integration.TraducaoDeTextos;
 import br.com.alura.codechella.model.Evento;
 import br.com.alura.codechella.model.TipoEvento;
 import br.com.alura.codechella.repository.EventoRepository;
@@ -55,5 +56,10 @@ public class EventoService {
         final var tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
 
         return repository.findByTipo(tipoEvento).map(EventoDto::toDto);
+    }
+
+    public Mono<String> obterTraducao(Long id, String idioma) {
+        return repository.findById(id)
+                .flatMap(evento -> TraducaoDeTextos.obterTraducao(evento.getDescricao(), idioma));
     }
 }
