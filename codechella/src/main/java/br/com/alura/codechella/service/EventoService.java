@@ -2,6 +2,7 @@ package br.com.alura.codechella.service;
 
 import br.com.alura.codechella.dto.EventoDto;
 import br.com.alura.codechella.model.Evento;
+import br.com.alura.codechella.model.TipoEvento;
 import br.com.alura.codechella.repository.EventoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,11 @@ public class EventoService {
 
     public Mono<Void> excluir(Long id) {
         return repository.findById(id).flatMap(repository::delete);
+    }
+
+    public Flux<EventoDto> obterPorTipo(String tipo) {
+        final var tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
+
+        return repository.findByTipo(tipoEvento).map(EventoDto::toDto);
     }
 }
