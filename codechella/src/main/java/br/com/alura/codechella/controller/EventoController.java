@@ -3,6 +3,7 @@ package br.com.alura.codechella.controller;
 import br.com.alura.codechella.dto.EventoDto;
 import br.com.alura.codechella.service.EventoService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -45,6 +46,7 @@ public class EventoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Mono<EventoDto> cadastrar(@RequestBody EventoDto eventoDto) {
         return service.cadastar(eventoDto).doOnSuccess(eventoSink::tryEmitNext);
     }
@@ -55,6 +57,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> excluir(@PathVariable Long id) {
         return service.excluir(id);
     }
